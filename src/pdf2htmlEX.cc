@@ -272,6 +272,7 @@ void check_param()
 
     if(!param.fallback_pages.empty())
     {
+        // parse comma-separated input
         std::string copy = param.fallback_pages;
         char *copy_ptr, *token;
         copy_ptr = (char *)copy.c_str();
@@ -288,6 +289,11 @@ void check_param()
                 printf("ignored invalid fallback page number %s\n", token);
             }
             token = std::strtok(NULL, ",");
+        }
+        // fallback pages don't work without option --correct-text-visibility
+        if(param.correct_text_visibility != 1)
+        {
+           printf("option --fallback-pages has no effect without option --correct-text-visibility\n");
         }
     }
 
