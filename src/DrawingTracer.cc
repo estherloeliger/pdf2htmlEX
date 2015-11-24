@@ -19,7 +19,9 @@ static constexpr bool DT_DEBUG = false;
 namespace pdf2htmlEX
 {
 
-DrawingTracer::DrawingTracer(const Param & param): param(param)
+DrawingTracer::DrawingTracer(const Param & param, int *current_page_ptr):
+  param(param),
+  current_page_ptr(current_page_ptr)
 #if ENABLE_SVG
 , cairo(nullptr)
 #endif
@@ -304,7 +306,9 @@ void DrawingTracer::draw_char_bbox(GfxState * state, double * bbox)
     if (cairo_in_clip(cairo, bbox[0], bbox[3]))
         ++pt_in;
 
-    if (pt_in == 0)
+    const std::set<int> *fallback_set = &param.fallback_page_set;
+    bool fallback = (fallback_set->find(*current_page_ptr) != fallback_set->end());
+    if (pt_in == 0 || fallback)
     {
         transform_bbox_by_ctm(bbox);
         if(on_char_clipped)

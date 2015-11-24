@@ -47,7 +47,7 @@ HTMLRenderer::HTMLRenderer(const Param & param)
     ,html_text_page(param, all_manager)
     ,preprocessor(param)
     ,tmp_files(param)
-    ,tracer(param)
+    ,tracer(param, &pageNum)
 {
     if(!(param.debug))
     {

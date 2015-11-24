@@ -10,6 +10,7 @@
 #define PARAM_H__
 
 #include <string>
+#include <set>
 
 namespace pdf2htmlEX {
 
@@ -17,6 +18,7 @@ struct Param
 {
     // pages
     int first_page, last_page;
+    int *current_page;
 
     // dimensions
     double zoom;
@@ -42,6 +44,8 @@ struct Param
     int correct_text_visibility;
     int printing;
     int fallback;
+    std::string fallback_pages;
+    std::set<int> fallback_page_set;
     int tmp_file_size_limit;
 
     // fonts
