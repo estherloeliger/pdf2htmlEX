@@ -37,7 +37,7 @@ public:
     // a char is drawn out of/partially in the clip area
     std::function<void(double * bbox, bool patially)> on_char_clipped;
 
-    DrawingTracer(const Param & param);
+    DrawingTracer(const Param & param, int *current_page);
     virtual ~DrawingTracer();
     void reset(GfxState * state);
 
@@ -69,6 +69,7 @@ private:
     void transform_bbox_by_ctm(double * bbox, GfxState * state = nullptr);
 
     const Param & param;
+    int *current_page_ptr;
 
 #if ENABLE_SVG
     cairo_t * cairo;

@@ -160,6 +160,7 @@ void parse_options (int argc, char **argv)
         .add("process-form", &param.process_form, 0, "include text fields and radio buttons")
         .add("printing", &param.printing, 1, "enable printing support")
         .add("fallback", &param.fallback, 0, "output in fallback mode")
+        .add("fallback-pages", &param.fallback_pages, "", "output specified pages only in fallback mode (e.g. 1,2,3)")
         .add("tmp-file-size-limit", &param.tmp_file_size_limit, -1, "Maximum size (in KB) used by temporary files, -1 for no limit.")
 
         // fonts
@@ -267,6 +268,27 @@ void check_param()
             param.page_filename = s + "%d.page";
         }
         sanitize_filename(param.page_filename);
+    }
+
+    if(!param.fallback_pages.empty())
+    {
+        std::string copy = param.fallback_pages;
+        char *copy_ptr, *token;
+        copy_ptr = (char *)copy.c_str();
+        token = std::strtok(copy_ptr, ",");
+        while(token != NULL)
+        {
+            int page = atoi(token);
+            if(page != 0)
+            {
+                param.fallback_page_set.insert(page);
+            }
+            else
+            {
+                printf("ignored invalid fallback page number %s\n", token);
+            }
+            token = std::strtok(NULL, ",");
+        }
     }
 
     else
